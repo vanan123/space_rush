@@ -6,7 +6,6 @@ from modules.commons import load_texture
 
 
 def material(filename):
-    """Retrieves informations about materials from .mtl file"""
     contents = {}
     mtl = {}
     for line in open(filename, "r"):
@@ -24,6 +23,7 @@ def material(filename):
         else:
             mtl[values[0]] = list(map(float, values[1:]))
     return contents
+
 
 
 class OBJ(object):
@@ -74,6 +74,7 @@ class OBJ(object):
         self.render_obj()
         gl.glEndList()
 
+   
     def render_obj(self):
         gl.glEnable(gl.GL_TEXTURE_2D)
         for face in self.faces:
@@ -98,7 +99,7 @@ class OBJ(object):
         gl.glDisable(gl.GL_TEXTURE_2D)
 
     def max_vert(self):
-        """To setect collision, largest coordinate iz returned"""
+        #To setect collision, largest coordinate is returned
         max_vert = 0
         for vert in self.vertices:
             if(abs(float(max(vert))) * self.size > max_vert):

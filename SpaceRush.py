@@ -1,8 +1,3 @@
-"""
-Goal of the game is to avoid asteroids.
-To run it you have to install python, pygame, pyopengl and numpy
-"""
-
 import math
 import pygame
 import random
@@ -15,7 +10,7 @@ my.center_window()
 
 
 class Game(object):
-    """Main game class"""
+    # Game class
     def __init__(self, width=1280, height=700):
         self.width = width
         self.height = height
@@ -27,7 +22,7 @@ class Game(object):
         self.score = 0
     
     def init_screen(self):
-        """Creating screen and initializing objects"""
+        # khởi tạo màn hình và các đối tượng
         pygame.init()
         size = [self.width, self.height]
         pygame.display.set_mode(size, pygame.OPENGL | pygame.DOUBLEBUF)
@@ -45,16 +40,16 @@ class Game(object):
         self.skybox.init_sky()
 
     def init_properties(self):
-        """Initialization of game properties"""
+        # Khởi tạo các đặc trưng của game
         self.play = False
         self.fps_view = False
         self.shield = 10
-        self.lean_speed = 4  # brzina rotacije broda
-        self.move_speed = 3  # brzina kretanja broda
-        self.obj_speed = 6   # brzina asteroida
+        self.lean_speed = 4  
+        self.move_speed = 3  
+        self.obj_speed = 6  
     
     def main_loop(self):
-        """Main game loop"""
+        # Màn hình chính chạy game
         self.init_screen()
         pygame.time.set_timer(pygame.USEREVENT + 1, 5000)
         pygame.time.set_timer(pygame.USEREVENT + 2, 100)
@@ -63,6 +58,7 @@ class Game(object):
         clock = pygame.time.Clock()
         while True:
             delta_time = clock.tick(60) / 10
+            print(delta_time)
             fps = int(clock.get_fps())
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
@@ -109,7 +105,7 @@ class Game(object):
                 pygame.display.flip()
 
     def display(self, delta_time, speed):
-        """Refreshing screen, clearing buffers, and redrawing objects""" #Ciscenje medjuspremnika i ponovno crtanje objekata
+        # Refresh lại màn hình, xoá dữ liệu cũ, hiển thị các object vật thể mới
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
@@ -155,7 +151,7 @@ class Game(object):
         self.light.render()
 
     def start_screen_anim(self, delta_time, speed):
-        """Updating a welcome screen (like a screensaver)"""
+        # Cập nhật màn hình welcome
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
@@ -176,7 +172,7 @@ class Game(object):
         self.light.render()
         
     def add_object(self):
-        """Adding asteroids to a random position near the ship"""
+        # Thêm các vật thể tại vị trí random gần với máy bay
         size = random.randint(3, 20)
         pos_x = random.uniform(self.player.position[0] - 200, self.player.position[0] + 200)
         pos_y = random.uniform(self.player.position[1] - 200, self.player.position[1] + 200)
@@ -188,17 +184,17 @@ class Game(object):
 
 
 class Model(object):
-    """Loading asteroids with LoadObject module"""
+    # Load các vật thể (vật cản)
     def __init__(self, filename, objsize, position, rot_x=0, rot_y=0, rot_z=0):
         self.obj = load_obj.OBJ(filename, objsize)
-        self.size = self.obj.max_vert() # za sudar
+        self.size = self.obj.max_vert()
         self.position = position
         self.rot_x = rot_x
         self.rot_y = rot_y
         self.rot_z = rot_z
 
     def render(self):
-        """Rendering asteroids on the screen"""
+        # Hiển thị các vật thể lên màn hình
         gl.glPushMatrix()
         gl.glTranslatef(self.position[0], self.position[1], self.position[2])
         gl.glRotatef(self.rot_x, 1, 0, 0)
